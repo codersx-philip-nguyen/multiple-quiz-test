@@ -1,0 +1,243 @@
+/* TODO(you): Write the CSS to finish the assignment! */
+body {
+  margin: 20px auto;
+  padding: 0;
+  width: 700px;
+}
+h3 {
+  font-size: 2em;
+}
+p {
+  font-family: "Proxima Nova", Arial, Helvetica, sans-serif;
+  font-size: 18px;
+  color: #222222;
+}
+
+label {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  margin: 0px;
+  padding-left: 31px;
+  flex-grow: 1;
+}
+
+input {
+  position: absolute;
+}
+
+.hidden {
+  display: none !important;
+}
+
+header {
+  border: #ccc 1px thick;
+  height: 80px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.course-name {
+  font-family: Helvetica, sans-serif;
+  font-size: 32px;
+  font-weight: bold;
+  color: #ee3322;
+}
+
+.mern-block {
+  display: flex;
+  justify-content: flex-end;
+  position: absolute;
+  right: 0;
+}
+
+.letter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  font-weight: bold;
+  background: #ffee00;
+  margin-left: 5px;
+}
+
+.letter span {
+  transform: rotate(-30deg);
+}
+
+.quiz-name {
+  width: 100%;
+  height: 425px;
+}
+
+.title {
+  max-width: 75%;
+  height: auto;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.title span {
+  font-size: 60px;
+  font-family: "Pangolin", "Trubechet MS", cursive;
+  color: black;
+  text-align: center;
+  vertical-align: center;
+  margin: 10px 5px;
+}
+.block-title {
+  background-image: url(./images//background.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 425px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.author {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.author span {
+  font-size: 14px;
+}
+
+.quiz-form {
+  width: 100%;
+  height: 250px;
+  background-color: #f1f1f1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  margin-top: 20px;
+  border: #dcdcdc 1px thick;
+}
+
+.submit-block {
+  width: 100%;
+  height: 120px;
+  background-color: #eee;
+  margin-top: 20px;
+  align-items: center;
+}
+.submit {
+  margin-top: 20px;
+}
+
+.title-form {
+  font-weight: bold;
+  text-align: center;
+  font-size: 2rem;
+}
+
+.ques-title {
+  margin: 30px 0px;
+}
+
+.ques-counter {
+  margin-top: 30px;
+}
+.quiz-form p {
+  text-align: center;
+}
+
+.btn-block {
+  display: flex;
+  justify-content: center;
+}
+
+.options {
+  display: flex;
+  position: relative;
+  height: 36px;
+  margin: 1px 0px 1px 0;
+  background-color: #f1f1f1;
+  align-items: center;
+}
+
+.score {
+  font-size: 24px;
+  color: #222222;
+  text-align: center;
+  margin: 10px;
+}
+
+.message {
+  text-align: center;
+}
+
+.message-res {
+  position: absolute;
+  top: 30%px;
+  right: 10px;
+  background-color: rgba(0, 0, 0, 0.2);
+  font-family: "Proxima Nova", Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  color: #eee;
+}
+
+/* input */
+input[type="radio"]:checked + label {
+  background-color: #ddd;
+}
+
+/* Button */
+.btn {
+  display: flex;
+  justify-content: center;
+  border: none;
+  color: white;
+  padding: 22px 32px;
+  text-align: center;
+  text-decoration: none;
+  margin: auto;
+}
+
+.start-btn {
+  background-color: #2196f3;
+}
+
+.start-btn:hover {
+  background-color: #0d8bf2;
+}
+
+.submit-btn {
+  background-color: #4caf50;
+}
+
+.submit-btn:hover {
+  background-color: #46a049;
+}
+
+.try-attempt-btn {
+  background-color: #2196f3;
+  margin-top: 18px;
+}
+
+.try-attempt-btn:hover {
+  background-color: #0d8bf2;
+}
+
+@media only screen and (max-width: 700px) {
+  body {
+    width: 95%;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  body {
+    width: 95%;
+  }
+  .mern-block {
+    display: none;
+  }
+}

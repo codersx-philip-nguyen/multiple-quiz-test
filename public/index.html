@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- TODO(you): Make whatever changes needed to complete the assignment! -->
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTML Quiz</title>
+    <link
+      rel="icon"
+      type="image/png"
+      href="images/favicon-32x32.png"
+      sizes="32x32"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="images/favicon-16x16.png"
+      sizes="16x16"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Pangolin:400,700|Proxima+Nova"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer="true"></script>
+  </head>
+
+  <body>
+    <!--
+
+    ******************************************
+    DO NOT TRANSCRIBE THE ARTICLE YOURSELF!!!!
+    ******************************************
+
+    You do not have to type in all of the text on the page!
+
+    The contents of the article is in `index-content.txt`, which is
+    included in this directory. Copy and paste the contents of that file into
+    this HTML file as needed. You should only need to add HTML to markup the
+    content.
+
+  -->
+
+    <header>
+      <!--  -->
+      <div class="course-name">WPR</div>
+      <div class="mern-block">
+        <p class="letter"><span>M</span></p>
+        <p class="letter"><span>E</span></p>
+        <p class="letter"><span>R</span></p>
+        <p class="letter"><span>N</span></p>
+      </div>
+    </header>
+
+    <article>
+      <section id="quiz-name">
+        <div class="block-title">
+          <h1 class="title"><span>HTML Quiz</span></h1>
+        </div>
+        <div class="author"><span>By HuyenNv</span></div>
+      </section>
+
+      <section id="introduction">
+        <!--  -->
+        <div style="margin-bottom: 18px" class="test">
+          <h3>The Test</h3>
+          <p style="margin: 18px 0px 18px 0px">
+            The test contains 10 questions and there is no time limit.
+          </p>
+          <p>
+            The test is not official, it's just a nice way to see how much you
+            know, or don't know, about HTML.
+          </p>
+        </div>
+        <div style="margin-top: 18px" class="countScore">
+          <h3>Count Your Score</h3>
+          <p style="margin: 18px 0px 18px 0px">
+            You will get 1 point for each correct answer. At the end of the
+            Quiz, your total score will be displayed. Maximum score is 10
+            points.
+          </p>
+          <div class="quiz-form start">
+            <div class="title-form start">Start the quiz</div>
+            <div><p>Good luck</p></div>
+            <div class="btn-block">
+              <button id="btn-start" class="btn start-btn">
+                <span>Start the HTML quiz ></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="attempt-quiz" class="hidden">
+        <!--  -->
+        <div id="quiz-form submit">
+          <form id="quiz_form">
+            <div class="all_options"></div>
+          </form>
+          <div class="btn-block submit-block">
+            <button id="btn-submit" class="btn submit-btn">
+              Submit the quiz
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section id="review-quiz" class="hidden">
+        <!--  -->
+        <div id="results">
+          <div class="quiz-form result">
+            <div class="title-form result">Result</div>
+            <div class="score inTen"></div>
+            <div class="score inPercentage"></div>
+            <div class="message"></div>
+            <div class="btn-block">
+              <button id="btn-try-attempt" class="btn try-attempt-btn">
+                <span>Try again ></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </article>
+  </body>
+</html>
