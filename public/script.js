@@ -1,3 +1,4 @@
+//Screen 1
 const $header = document.querySelector("header");
 const $introSection = document.querySelector("#introduction");
 
@@ -6,7 +7,6 @@ const $quizSection = document.querySelector("#attempt-quiz");
 const $quizContainer = document.querySelector("#quiz");
 const $optionElements = document.querySelector(".all_options");
 const $submit_block = document.querySelector(".submit-block");
-
 //screen 3
 const $resultSection = document.querySelector("#review-quiz");
 const $scorePerTen = document.querySelector(".inTen");
@@ -14,9 +14,14 @@ const $scorePercentage = document.querySelector(".inPercentage");
 const $msg = document.querySelector(".message");
 
 let idAttempt;
-const getAttemptById = async () => {
-  let current_attemptID = localStorage.getItem("attempt_id");
-  const response = await fetch(`/attempts/${current_attemptID}`, {
+
+/**
+ * @overviews get the attempt by ID
+ * @param {*} attemptID
+ * @returns object of existed attempt
+ */
+const getAttemptById = async (attemptID) => {
+  const response = await fetch(`/attempts/${attemptID}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -26,7 +31,11 @@ const getAttemptById = async () => {
   return data;
 };
 
-const startAttempt = async () => {
+/**
+ * @overviews start new attempt
+ * @returns a object of new attempt
+ */
+const startNewAttempt = async () => {
   const reponse = await fetch("/attempts", {
     method: "POST",
     headers: {
@@ -37,20 +46,28 @@ const startAttempt = async () => {
   return attemptObject;
 };
 
-const quizGenerator = async (e) => {
+/**
+ * @overviews generate a quiz when user click start quiz button
+ *
+ */
+const quizGenerator = async () => {
   // class hiden
   $introSection.classList.add("hidden");
   $quizSection.classList.remove("hidden");
 
   let data;
-  if (localStorage.getItem("attempt_id")) {
-    data = await getAttemptById();
+  let attempt_id = localStorage.getItem("attempt_id");
+
+  if (attempt_id) {
+    data = await getAttemptById(attempt_id);
   } else {
-    data = await startAttempt();
+    data = await startNewAttempt();
     localStorage.setItem("attempt_id", data._id);
   }
 
-  data.questions.map((ques, index) => {
+  const { checkedAnswers, questions } = data;
+  console.log("checked answers", checkedAnswers);
+  questions.map((ques, index) => {
     // create a div for wrap each question
     const questionDiv = document.createElement("div");
     questionDiv.classList.add("ques-section");
@@ -83,7 +100,20 @@ const quizGenerator = async (e) => {
       input.value = `${i}`;
       input.classList.add("option-radio");
       input.name = `${p.id}`;
-
+      if (
+        checkedAnswers !== "undefined" &&
+        typeof checkedAnswers === "object" &&
+        Object.keys(checkedAnswers).length > 0
+      ) {
+        if (
+          input.name in checkedAnswers &&
+          parseInt(input.value) === parseInt(checkedAnswers[input.name])
+        ) {
+          input.setAttribute("checked", "true");
+        } else {
+          input.checked = "";
+        }
+      }
       //<label class="option">
       const label = document.createElement("label");
       label.setAttribute("for", `question${index + 1}_option${i}`);
@@ -102,42 +132,59 @@ const quizGenerator = async (e) => {
       $optionElements.appendChild(questionDiv);
     });
   });
-
-  await getCheckedAnswers();
+  await patchedAttemptById(localStorage.getItem("attempt_id"));
 
   $startBtn.removeEventListener("click", quizGenerator);
   idAttempt = data._id;
 };
 
-const getCheckedAnswers = async () => {
+/**
+ * @overviews build an object that contains the selectd answers from the user
+ * @param attemptID
+ * @returns object with checked answer object
+ */
+const patchedAttemptById = async (attemptID) => {
   //build an object that holds user's answers
   let body = {
     checkedAnswers: {},
   };
 
+  let res;
   const $inputs = document.querySelectorAll("input");
   for (input of $inputs) {
     const _input = document.querySelector(`#${input.id}`);
-    _input.addEventListener("click", () => {
+    _input.addEventListener("click", async () => {
       if (_input.checked) {
         body.checkedAnswers[_input.name] = parseInt(_input.value);
       }
-      console.log(body);
+      //for each input clicked (changed) -> send to the server
+      res = await updateAPI(attemptID, body);
+      return res;
     });
   }
+};
 
-  //call patch api
-  const attempt_id = localStorage.getItem("attempt_id");
-  const res = await fetch(`/attempts/${attempt_id}`, {
+/**
+ * @overviews call PATCH api from the server
+ * @param {*} attemtID
+ * @param {*} object
+ * @returns object attempt sent from the server
+ */
+const updateAPI = async (attemtID, object) => {
+  const res = await fetch(`attempts/${attemtID}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(body),
+    body: JSON.stringify(object),
   });
   const data = await res.json();
+  return data;
 };
 
+/**
+ * @overviews submit the attempt and display the result
+ */
 const onSubmitQuiz = async () => {
   //if user finish your work, clear the localStorage
   localStorage.removeItem("attempt_id");
@@ -180,7 +227,7 @@ const onSubmitQuiz = async () => {
   });
 
   const data = await response.json();
-  const solutions = data.correctAnswers;
+  const { correctAnswers } = data;
 
   //gray all correct answer and disable input
   for (input of $inputs) {
@@ -188,7 +235,7 @@ const onSubmitQuiz = async () => {
     let trueAnswer = input.value;
     let $selectedLabels = document.querySelector(`label[for=${input.id}]`);
 
-    if (trueAnswer == solutions[quesID]) {
+    if (trueAnswer == correctAnswers[quesID]) {
       // color all correct answers
       $selectedLabels.style = "background-color: gray;";
       const div = document.createElement("div");
@@ -213,7 +260,7 @@ const onSubmitQuiz = async () => {
     let quesId = input.name;
     let $selectedLabels = document.querySelector(`label[for=${input.id}]`);
 
-    if (selectedIndex == data.correctAnswers[quesId]) {
+    if (selectedIndex == correctAnswers[quesId]) {
       $selectedLabels.style = "background-color: #d4edda;";
     } else {
       $selectedLabels.style = "background-color: #f8d7da;";
@@ -225,6 +272,9 @@ const onSubmitQuiz = async () => {
   }
 };
 
+/**
+ * @overviews
+ */
 const onTryAgain = () => {
   //back to screen 1 and scroll up to the top
   $header.scrollIntoView();

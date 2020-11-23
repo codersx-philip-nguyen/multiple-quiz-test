@@ -77,17 +77,16 @@ app.post("/attempts/:id/submit", async (req, res) => {
   const { answers } = req.body;
   const { questions, correctAnswers } = attempt;
   try {
-    //calculate the score, completed
-    let completed = true;
+    //calculate the score
     let score = 0;
     let scoreText = "";
+
     for (let i = 0; i < questions.length; ++i) {
       let id = questions[i]._id;
       if (id in answers && correctAnswers[id] == answers[id]) {
         score += 1;
       }
     }
-
     if (score <= 6) {
       scoreText = "Practice more to improve it :D";
     } else if (score > 6 && score <= 8) {
@@ -96,19 +95,14 @@ app.post("/attempts/:id/submit", async (req, res) => {
       scoreText = "Excellent!";
     }
 
-    const submitted_Attempt = new Attempt({
-      questions,
-      score: score,
-      completed: completed,
-      correctAnswers,
-      answers,
-      scoreText: scoreText,
-    });
-    const response = await submitted_Attempt.save();
+    //update score, completed, scoreText
+    attempt.score = score;
+    attempt.completed = true;
+    attempt.scoreText = scoreText;
 
-    //remove garbage attempt
-    await Attempt.findByIdAndDelete(attempt._id);
-    res.json(response);
+    const updatedAttempt = await attempt.save();
+
+    res.json(updatedAttempt);
   } catch (err) {
     console.log(err.message);
   }
@@ -132,17 +126,12 @@ app.get("/attempts/:id", async (req, res) => {
 app.patch("/attempts/:id", async (req, res) => {
   try {
     const attempt = await Attempt.findById(req.params.id);
-
     if (!attempt) {
       alert("Attempt not found");
       return res.status(404).json({ msg: "Attempt not found" });
     }
 
     const { checkedAnswers } = await req.body;
-    // attempt.checkedAnswers = {
-    //   name: "Huyen",
-    //   age: 20,
-    // };
     attempt.checkedAnswers = checkedAnswers;
     const updatedAttempt = await attempt.save();
     console.log(updatedAttempt);
